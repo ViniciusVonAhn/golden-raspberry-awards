@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS movie;
+
+CREATE TABLE movie (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    "year" INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    studios VARCHAR(255),
+    producers VARCHAR(255) NOT NULL,
+    winner BOOLEAN NOT NULL
+);
