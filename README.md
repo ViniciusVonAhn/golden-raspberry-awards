@@ -88,3 +88,7 @@ GET /v1/api/producers/min-max-winners
 Curl para o endpoint:
     
     curl --location 'http://localhost:8080/v1/api/producers/min-max-winners'
+
+### Diagrama de sequencia:
+
+![Diagrama de sequencia](./sequential-diagram.png)
