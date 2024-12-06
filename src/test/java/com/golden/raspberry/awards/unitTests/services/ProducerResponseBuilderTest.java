@@ -23,13 +23,13 @@ class ProducerResponseBuilderTest {
     void testBuildResponse() {
         Map<String, List<Integer>> producerMapYears = new HashMap<>();
         producerMapYears.put("Sean S. Cunningham", Arrays.asList(1983, 1984));
-        producerMapYears.put("Allan Carr", Arrays.asList(1980, 1987));
+        producerMapYears.put("Allan Carr", Arrays.asList(1980, 1982, 1983, 1987));
         producerMapYears.put("Matthew Vaughn", Collections.singletonList(2002));
 
         List<ProducerResponseDto> response = producerResponseBuilder.buildResponse(producerMapYears);
 
         assertNotNull(response);
-        assertEquals(2, response.size());
+        assertEquals(3, response.size());
 
         ProducerResponseDto sean = response.stream()
                 .filter(p -> p.getName().equals("Sean S. Cunningham"))
@@ -40,14 +40,26 @@ class ProducerResponseBuilderTest {
         assertEquals(1984, sean.getFollowingWin());
         assertEquals(1, sean.getInterval());
 
-        ProducerResponseDto allan = response.stream()
+        List<ProducerResponseDto> allanResponses = response.stream()
                 .filter(p -> p.getName().equals("Allan Carr"))
+                .toList();
+        assertEquals(2, allanResponses.size());
+
+        ProducerResponseDto allanMinInterval = allanResponses.stream()
+                .filter(p -> p.getInterval() == 1)
                 .findFirst()
                 .orElseThrow();
-        assertEquals("Allan Carr", allan.getName());
-        assertEquals(1980, allan.getPreviousWin());
-        assertEquals(1987, allan.getFollowingWin());
-        assertEquals(7, allan.getInterval());
+        assertEquals("Allan Carr", allanMinInterval.getName());
+        assertEquals(1982, allanMinInterval.getPreviousWin());
+        assertEquals(1983, allanMinInterval.getFollowingWin());
+
+        ProducerResponseDto allanMaxInterval = allanResponses.stream()
+                .filter(p -> p.getInterval() == 7)
+                .findFirst()
+                .orElseThrow();
+        assertEquals("Allan Carr", allanMaxInterval.getName());
+        assertEquals(1980, allanMaxInterval.getPreviousWin());
+        assertEquals(1987, allanMaxInterval.getFollowingWin());
     }
 
     @Test
